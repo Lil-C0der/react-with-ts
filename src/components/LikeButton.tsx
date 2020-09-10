@@ -1,26 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 
 import useMousePosition from '../hooks/useMousePosition'
+
+import { ThemeContext } from '../App'
 
 const LikeButton: React.FC = () => {
   const [like, setLike] = useState(0)
   const [btnStatus, setBtnStatus] = useState(true)
 
+  const domRef = useRef<HTMLButtonElement>(null)
+
   const mousePosition = useMousePosition()
 
-  useEffect(() => {
-    console.log('running')
+  // const theme = useContext()
 
+  useEffect(() => {
     document.title = `${like} likes`
   }, [like])
 
+  useEffect(() => {
+    // const btn = domRef.current
+    // btn?.click()
+    if (domRef && domRef.current) {
+      const btn = domRef.current
+      btn.click()
+    }
+  }, [])
+
   return (
     <div>
+      {/* <ThemeContext.Consumer> */}
       <h2>
         X: {mousePosition.x} Y: {mousePosition.y}
       </h2>
-      <button onClick={() => setLike(like + 1)}>👍 {like}</button>
+      <button
+        ref={domRef}
+        onClick={() => {
+          setLike(like + 1)
+        }}
+      >
+        👍 {like}
+      </button>
       <button onClick={() => setBtnStatus(!btnStatus)}>{btnStatus ? 'ON' : 'OFF'}</button>
+      {/* </ThemeContext.Consumer> */}
     </div>
   )
 }

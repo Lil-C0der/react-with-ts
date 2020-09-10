@@ -7,10 +7,10 @@ const useMousePosition = () => {
     function updateMousePosition(e: MouseEvent) {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
-    document.addEventListener('mousemove', updateMousePosition)
+    document.addEventListener('click', updateMousePosition)
     return () => {
       console.log('remove')
-      document.removeEventListener('mousemove', updateMousePosition)
+      document.removeEventListener('click', updateMousePosition)
     }
   }, [])
 

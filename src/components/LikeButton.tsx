@@ -1,50 +1,44 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
-
-import useMousePosition from '../hooks/useMousePosition'
-
-import { ThemeContext } from '../App'
+import React, { useState, useEffect, useRef, useContext } from 'react';
 
 const LikeButton: React.FC = () => {
-  const [like, setLike] = useState(0)
-  const [btnStatus, setBtnStatus] = useState(true)
-
-  const domRef = useRef<HTMLButtonElement>(null)
-
-  const mousePosition = useMousePosition()
-
-  // const theme = useContext()
+  const [like, setLike] = useState(0);
+  const [btnStatus, setBtnStatus] = useState(true);
 
   useEffect(() => {
-    document.title = `${like} likes`
-  }, [like])
+    document.title = `${like} likes`;
+  }, [like]);
 
+  const didMountRef = useRef<boolean>(false);
   useEffect(() => {
-    // const btn = domRef.current
-    // btn?.click()
-    if (domRef && domRef.current) {
-      const btn = domRef.current
-      btn.click()
+    if (didMountRef.current) {
+      console.log('组件已经挂载');
+    } else {
+      didMountRef.current = true;
+      console.log('刚刚挂载');
     }
-  }, [])
+  });
+
+  const domRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    domRef.current?.focus();
+  });
 
   return (
     <div>
-      {/* <ThemeContext.Consumer> */}
-      <h2>
-        X: {mousePosition.x} Y: {mousePosition.y}
-      </h2>
+      <input ref={domRef}></input>
       <button
-        ref={domRef}
         onClick={() => {
-          setLike(like + 1)
+          setLike(like + 1);
         }}
       >
         👍 {like}
       </button>
-      <button onClick={() => setBtnStatus(!btnStatus)}>{btnStatus ? 'ON' : 'OFF'}</button>
-      {/* </ThemeContext.Consumer> */}
-    </div>
-  )
-}
 
-export default LikeButton
+      <button onClick={() => setBtnStatus(!btnStatus)}>
+        {btnStatus ? 'ON' : 'OFF'}
+      </button>
+    </div>
+  );
+};
+
+export default LikeButton;
